@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 require("dotenv").config()
 
-const user = require("../models/user")
+const user = require("../../models/user")
 
 const dbUrl = process.env.DB_URL
 const dbName = process.env.DB_NAME
