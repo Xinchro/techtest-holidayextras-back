@@ -13,6 +13,21 @@ app.use(bodyParser.json())
 */
 app.get("/", (req, res) => res.send("Hello world!"))
 
+app.get("/user/new", (req, res) => {
+  res.setHeader("Content-Type", "application/json")
+  res.send({
+    "error": "Did you mean to POST this url?"
+  })
+})
+
+app.post("/user/new", (req, res) => {
+  addUser(req.body)
+    .then((response) => {
+      res.setHeader("Content-Type", "application/json")
+      res.send(response)
+    })
+})
+
 app.get("/user/:id", (req, res) => {
   getUser(req.params.id)
    .then((response) => {
@@ -21,14 +36,13 @@ app.get("/user/:id", (req, res) => {
    })
 })
 
-app.post("/user/new", (req, res) => {
-  console.log(req.body)
-  addUser(req.body)
-    .then((response) => {
-      res.setHeader("Content-Type", "application/json")
-      res.send(response)
-    })
+app.post("/user", (req, res) => {
+  res.setHeader("Content-Type", "application/json")
+  res.send({
+    "error": "Did you mean to GET this url?"
+  })
 })
+
 
 
 const port = 3000
