@@ -46,4 +46,7 @@ app.post("/user", (req, res) => {
 
 
 const port = 3000
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+module.exports = app
+module.exports.server = server
