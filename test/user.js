@@ -10,6 +10,22 @@ const appUrl = process.env.APP_URL
 chai.use(chaiHttp)
 
 describe("/user", () => {
+  describe("GET /user", () => {
+    it("it should try GET a new user and receive an object with an error", (done) => {
+      chai.request(appUrl)
+        .get("/user")
+        .end((err, res) => {
+          res.should.have.status(404)
+          res.body.should.be.a("object")
+          res.body.should.have.keys(
+            "error"
+          )
+          res.body.error.should.equal("Did you mean to GET this url, but with a user ID?")
+          done()
+        })
+    })
+  })
+
   describe("GET /user/new", () => {
     it("it should try GET a new user and receive an object with an error", (done) => {
       chai.request(appUrl)
