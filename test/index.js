@@ -25,16 +25,15 @@ describe("/user", () => {
 
   describe("POST /user/new", () => {
     it("it should POST a new user and receive an object with the same data and a new id", (done) => {
+      const testJSON = {
+        "email": "test@test.test",
+        "forename": "Namey",
+        "surname": "McNameFace",
+        "created": (new Date()).toISOString()
+      }
       chai.request(appUrl)
         .post("/user/new")
-        .send(
-          {
-            "email": "test@test.test",
-            "forename": "Namey",
-            "surname": "McNameFace",
-            "created": (new Date()).toISOString()
-          }
-        )
+        .send(testJSON)
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.a("object")
@@ -46,6 +45,7 @@ describe("/user", () => {
             "surname",
             "created"
           )
+          res.body.should.have.properties(testJSON)
           done()
         })
     })
