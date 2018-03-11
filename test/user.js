@@ -45,7 +45,7 @@ describe("/user", () => {
             "surname",
             "created"
           )
-          res.body.should.have.properties(testJSON)
+          res.body.should.contain(testJSON)
           done()
         })
     })
