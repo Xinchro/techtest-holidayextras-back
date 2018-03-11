@@ -15,7 +15,7 @@ describe("/user", () => {
       chai.request(appUrl)
         .get("/user/new")
         .end((err, res) => {
-          res.should.have.status(200)
+          res.should.have.status(404)
           res.body.should.be.a("object")
           res.body.error.should.equal("Did you mean to POST this url?")
           done()
