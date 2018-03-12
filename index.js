@@ -15,6 +15,7 @@ app.get("/", (req, res) => res.send("Hello world!"))
 
 app.get("/user/new", (req, res) => {
   res.setHeader("Content-Type", "application/json")
+  res.status(404)
   res.send({
     "error": "Did you mean to POST this url?"
   })
