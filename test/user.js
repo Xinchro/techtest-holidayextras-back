@@ -35,17 +35,17 @@ describe("/user", () => {
   })
 
   describe("GET /user with queries", () => {
-    it("it should GET a user via firstname and return an array of users with that name", (done) => {
+    it("it should GET a user via forename and return an array of users with that name", (done) => {
       chai.request(appUrl)
         .get("/user")
-        .query({ firstname: testJSON.firstname })
+        .query({ forename: testJSON.forename })
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an("array")
           res.body[0].should.have.keys(
-            "firstname"
+            "forename"
           )
-          res.body[0].firstname.should.equal(testJSON.firstname)
+          res.body[0].forename.should.equal(testJSON.forename)
           done()
         })
     })
@@ -65,9 +65,9 @@ describe("/user", () => {
         })
     })
 
-    it("it should GET a user via firstname and surname and return an array of users with those names", (done) => {
+    it("it should GET a user via forename and surname and return an array of users with those names", (done) => {
       let testQuery = {
-        firstname: testJSON.firstname,
+        forename: testJSON.forename,
         surname: testJSON.surname
       }
       chai.request(appUrl)
@@ -77,7 +77,7 @@ describe("/user", () => {
           res.should.have.status(200)
           res.body.should.be.an("array")
           res.body[0].should.have.keys(
-            "firstname",
+            "forename",
             "surname"
           )
           res.body[0].should.contain(testQuery)
