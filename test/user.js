@@ -40,7 +40,6 @@ describe("/user", () => {
         .get("/user")
         .query({ firstname: testJSON.firstname })
         .end((err, res) => {
-          console.log(res)
           res.should.have.status(200)
           res.body.should.be.an("array")
           res.body[0].should.have.keys(
@@ -62,6 +61,26 @@ describe("/user", () => {
             "surname"
           )
           res.body[0].surname.should.equal(testJSON.surname)
+          done()
+        })
+    })
+
+    it("it should GET a user via firstname and surname and return an array of users with those names", (done) => {
+      let testQuery = {
+        firstname: testJSON.firstname,
+        surname: testJSON.surname
+      }
+      chai.request(appUrl)
+        .get("/user")
+        .query(testQuery)
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.an("array")
+          res.body[0].should.have.keys(
+            "firstname",
+            "surname"
+          )
+          res.body[0].should.contain(testQuery)
           done()
         })
     })
