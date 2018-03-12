@@ -25,7 +25,7 @@ describe("/user", () => {
         .end((err, res) => {
           res.should.have.status(404)
           res.body.should.be.an("object")
-          res.body.should.have.keys(
+          res.body.should.have.any.keys(
             "error"
           )
           res.body.error.should.equal("Did you mean to GET this url, but with a user ID?")
@@ -38,14 +38,16 @@ describe("/user", () => {
     it("it should GET a user via forename and return an array of users with that name", (done) => {
       chai.request(appUrl)
         .get("/user")
-        .query({ forename: testJSON.forename })
+        .query({ "forename": testJSON.forename })
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an("array")
-          res.body[0].should.have.keys(
-            "forename"
-          )
-          res.body[0].forename.should.equal(testJSON.forename)
+          if(res.body.length > 0) {
+            res.body[0].should.have.any.keys(
+              "forename"
+            )
+            res.body[0].forename.should.equal(testJSON.forename)
+          }
           done()
         })
     })
@@ -53,22 +55,24 @@ describe("/user", () => {
     it("it should GET a user via surname and return an array of users with that name", (done) => {
       chai.request(appUrl)
         .get("/user")
-        .query({ surname: testJSON.surname })
+        .query({ "surname": testJSON.surname })
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an("array")
-          res.body[0].should.have.keys(
-            "surname"
-          )
-          res.body[0].surname.should.equal(testJSON.surname)
+          if(res.body.length > 0) {
+            res.body[0].should.have.any.keys(
+              "surname"
+            )
+            res.body[0].surname.should.equal(testJSON.surname)
+          }
           done()
         })
     })
 
     it("it should GET a user via forename and surname and return an array of users with those names", (done) => {
       let testQuery = {
-        forename: testJSON.forename,
-        surname: testJSON.surname
+        "forename": testJSON.forename,
+        "surname": testJSON.surname
       }
       chai.request(appUrl)
         .get("/user")
@@ -76,11 +80,13 @@ describe("/user", () => {
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.an("array")
-          res.body[0].should.have.keys(
-            "forename",
-            "surname"
-          )
-          res.body[0].should.contain(testQuery)
+          if(res.body.length > 0) {
+          res.body[0].should.have.any.keys(
+              "forename",
+              "surname"
+            )
+            res.body[0].should.contain(testQuery)
+          }
           done()
         })
     })
