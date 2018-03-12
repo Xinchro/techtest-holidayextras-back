@@ -30,14 +30,11 @@ app.post("/user/new", (req, res) => {
 })
 
 app.get("/user", (req, res) => {
-  getUser(req.params.id)
-   .then((response) => {
-      res.setHeader("Content-Type", "application/json")
-      res.status(404)
-      res.send({
-        "error": "Did you mean to GET this url, but with a user ID?"
-      })
-   })
+    res.setHeader("Content-Type", "application/json")
+    res.status(404)
+    res.send({
+      "error": "Did you mean to GET this url, but with a user ID?"
+    })
 })
 
 app.get("/user/:id", (req, res) => {
