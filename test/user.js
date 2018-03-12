@@ -10,22 +10,7 @@ const dbUrl = process.env.DB_URL
 
 chai.use(chaiHttp)
 
-const mongoose = require("mongoose")
-const Mockgoose = require("mockgoose").Mockgoose
-const mockgoose = new Mockgoose(mongoose)
-
 describe("/user", () => {
-  before((done) => {
-    mockgoose.prepareStorage()
-      .then(() =>
-        mongoose.connect(dbUrl, done)
-      )
-  })
-
-  after(() => {
-    mongoose.disconnect()
-  })
-
   describe("GET /user", () => {
     it("it should try GET a new user and receive an object with an error", (done) => {
       chai.request(appUrl)
