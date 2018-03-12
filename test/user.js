@@ -12,7 +12,7 @@ chai.use(chaiHttp)
 
 describe("/user", () => {
   describe("GET /user", () => {
-    it("it should try GET a new user and receive an object with an error", (done) => {
+    it("it should try GET a user without an ID and fail", (done) => {
       chai.request(appUrl)
         .get("/user")
         .end((err, res) => {
