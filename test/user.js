@@ -11,17 +11,69 @@ const dbUrl = process.env.DB_URL
 chai.use(chaiHttp)
 
 describe("/user", () => {
+  const testJSON = {
+    "email": "test@test.test",
+    "forename": "Namey",
+    "surname": "McNameFace",
+    "created": (new Date()).toISOString()
+  }
+
   describe("GET /user", () => {
-    it("it should try GET a user without an ID and fail", (done) => {
+    it("it should try GET a user without an ID or query and fail", (done) => {
       chai.request(appUrl)
         .get("/user")
         .end((err, res) => {
           res.should.have.status(404)
-          res.body.should.be.a("object")
+          res.body.should.be.an("object")
           res.body.should.have.keys(
             "error"
           )
           res.body.error.should.equal("Did you mean to GET this url, but with a user ID?")
+          done()
+        })
+    })
+  })
+
+  describe("GET /user with queries", () => {
+    it("it should GET a user via firstname and return an array of users with that name", (done) => {
+      chai.request(appUrl)
+        .get("/user")
+        .query({ firstname: testJSON.firstname })
+        .end((err, res) => {
+          console.log(res)
+          res.should.have.status(200)
+          res.body.should.be.an("array")
+          res.body[0].should.have.keys(
+            "firstname"
+          )
+          res.body[0].firstname.should.equal(testJSON.firstname)
+          done()
+        })
+    })
+
+    it("it should GET a user via surname and return an array of users with that name", (done) => {
+      chai.request(appUrl)
+        .get("/user")
+        .query({ surname: testJSON.surname })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.an("array")
+          res.body[0].should.have.keys(
+            "surname"
+          )
+          res.body[0].surname.should.equal(testJSON.surname)
+          done()
+        })
+    })
+
+    it("it should GET a user via an unsupported query and return an error", (done) => {
+      chai.request(appUrl)
+        .get("/user")
+        .query({ wrongQuery: "wrong" })
+        .end((err, res) => {
+          res.should.have.status(404)
+          res.body.should.be.an("object")
+          res.body.error.should.equal("Unsupported query")
           done()
         })
     })
@@ -33,7 +85,7 @@ describe("/user", () => {
         .get("/user/new")
         .end((err, res) => {
           res.should.have.status(404)
-          res.body.should.be.a("object")
+          res.body.should.be.an("object")
           res.body.error.should.equal("Did you mean to POST this url?")
           done()
         })
@@ -42,18 +94,12 @@ describe("/user", () => {
 
   describe("POST /user/new", () => {
     it("it should POST a new user and receive an object with the same data and a new id", (done) => {
-      const testJSON = {
-        "email": "test@test.test",
-        "forename": "Namey",
-        "surname": "McNameFace",
-        "created": (new Date()).toISOString()
-      }
       chai.request(appUrl)
         .post("/user/new")
         .send(testJSON)
         .end((err, res) => {
           res.should.have.status(200)
-          res.body.should.be.a("object")
+          res.body.should.be.an("object")
           res.body.should.have.keys(
             "__v",
             "_id",
