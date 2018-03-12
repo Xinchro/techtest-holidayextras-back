@@ -30,15 +30,45 @@ app.post("/user/new", (req, res) => {
 })
 
 app.get("/user", (req, res) => {
+  if(Object.keys(req.query).length > 0) {
+    if(req.query.forename && req.query.lastname) {
+      getUser({ "forename": req.query.forename, "surname": req.query.surname }, "fullname")
+       .then((response) => {
+          res.setHeader("Content-Type", "application/json")
+          res.send(response)
+       })
+    } else
+    if(req.query.forename) {
+      getUser(req.query.forename, "forename")
+       .then((response) => {
+          res.setHeader("Content-Type", "application/json")
+          res.send(response)
+       })
+    } else
+    if(req.query.surname) {
+      getUser(req.query.surname, "surname")
+       .then((response) => {
+          res.setHeader("Content-Type", "application/json")
+          res.send(response)
+       })
+    } else {
+      res.setHeader("Content-Type", "application/json")
+      res.status(404)
+      res.send({
+        "error": "Unsupported query"
+      })
+    }
+  } else {
     res.setHeader("Content-Type", "application/json")
     res.status(404)
     res.send({
       "error": "Did you mean to GET this url, but with a user ID?"
     })
+  }
 })
 
 app.get("/user/:id", (req, res) => {
-  getUser(req.params.id)
+  getUser(req.params.id, "id")
    .then((response) => {
       res.setHeader("Content-Type", "application/json")
       res.send(response)
